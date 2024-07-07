@@ -66,7 +66,9 @@ async def build_stocks_msg(message: Message):
                 'last_management_report': modify_str(await shorten_url(last_management_report.get('link', '')), {
                     **options,
                     'span': { 'position': 'start', 'value': last_management_report.get('date', '') }
-                })
+                }),
+                'reports_link': modify_str(await shorten_url(value.get('reports_link', '')), options),
+                'url': modify_str(await shorten_url(value.get('url', '')), options)
             }
 
             result = f"Nome: {modified_values['name']}\n"
@@ -84,8 +86,8 @@ async def build_stocks_msg(message: Message):
             result += f"Total de papéis: {modified_values['total_stock_paper']}\n"
             result += f"Último Relatório Trimestral: {modified_values['last_management_report']}\n"
 
-            result += f"> Para mais relatórios desse FII, acesse: {await shorten_url(value.get('reports_link', ''))}\n"
-            result += f"> Para mais info sobre esse FII, acesse: {await shorten_url(value.get('url', ''))}"
+            result += f"> Para mais relatórios desse FII, acesse: {modified_values['reports_link']}\n"
+            result += f"> Para mais info sobre esse FII, acesse: {modified_values['url']}"
 
             embed = Embed(title=value.get('code'), colour=discord.Colour.dark_red())
             embed.add_field(name='', value=result)
